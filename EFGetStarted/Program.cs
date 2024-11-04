@@ -33,20 +33,26 @@ Console.WriteLine("Delete the blog");
 db.Remove(blog);
 db.SaveChanges();
 
-seedTasks();
+// Tasks & Todos
+//seedTasks();
 displayTasksAndTodos(db);
+printIncompleteTasksAndTodos(db);
+
+//deleteAllTasksAndTodos(db)
+
+
 
 static void seedTasks()
 {
     using var db = new BloggingContext();
 
     Console.WriteLine("Creating tasks and todos");
-    Todo wirt = createTodo("Write code", false, db);
+    Todo wirt = createTodo("Write code", true, db);
     Todo compile = createTodo("Compile source", false, db);
     Todo test = createTodo("Test program", false, db);
 
     Todo water = createTodo("Pour water", false, db);
-    Todo coffe = createTodo("Pour coffee", false, db);
+    Todo coffe = createTodo("Pour coffee", true, db);
     Todo on = createTodo("Turn on", false, db);
 
 
@@ -93,4 +99,35 @@ static void displayTasksAndTodos(BloggingContext db)
             Console.WriteLine($"  - Todo: {todo.Name} (ID: {todo.TodoId}, Completed: {todo.IsComplete})");
         }
     }
+}
+
+static void printIncompleteTasksAndTodos(BloggingContext db)
+{
+    Console.WriteLine("Displaying all tasks and their associated undone todos:");
+
+    var tasksWithIncompleteTodos = db.Tasks.Where(t => t.Todos.Any(todo => !todo.IsComplete))
+                                     .Include(t => t.Todos)
+                                     .ToList();
+
+    foreach (var task in tasksWithIncompleteTodos)
+    {
+        Console.WriteLine($"Task: {task.Name} (ID: {task.TaskId})");
+
+        foreach (var todo in task.Todos.Where(todo => !todo.IsComplete))
+        {
+            Console.WriteLine($"  - Todo: {todo.Name} (ID: {todo.TodoId}, Completed: {todo.IsComplete})");
+        }
+    }
+}
+
+static void deleteAllTasksAndTodos(BloggingContext db)
+{
+    // Delete all Todos
+    db.Todos.RemoveRange(db.Todos);
+
+    // Delete all Tasks
+    db.Tasks.RemoveRange(db.Tasks);
+
+    // Save changes to the database
+    db.SaveChanges();
 }
