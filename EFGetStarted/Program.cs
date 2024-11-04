@@ -35,12 +35,15 @@ db.SaveChanges();
 
 // Tasks & Todos
 //seedTasks();
-displayTasksAndTodos(db);
-printIncompleteTasksAndTodos(db);
-
+//displayTasksAndTodos(db);
+//printIncompleteTasksAndTodos(db);
 //deleteAllTasksAndTodos(db)
 
 
+// Teams & Workers
+seedTeamsAndWorkers();
+displayTeamsAndWorkers(db);
+//deleteAllTeamsAndWorkers(db);
 
 static void seedTasks()
 {
@@ -122,12 +125,71 @@ static void printIncompleteTasksAndTodos(BloggingContext db)
 
 static void deleteAllTasksAndTodos(BloggingContext db)
 {
-    // Delete all Todos
     db.Todos.RemoveRange(db.Todos);
-
-    // Delete all Tasks
     db.Tasks.RemoveRange(db.Tasks);
-
-    // Save changes to the database
     db.SaveChanges();
+}
+
+static void seedTeamsAndWorkers()
+{
+    using var db = new BloggingContext();
+
+    Console.WriteLine("Creating teams and workers...");
+        
+    Worker Steen = createWorker("Steen Secher", db);
+    Worker Ejvind = createWorker("Ejvind Møller", db);
+    Worker Konrad = createWorker("Konrad Sommer", db);
+    Worker Sofus = createWorker("Sofus Lotus", db);
+    Worker Remo = createWorker("Remo Lademann", db);
+    Worker Ella = createWorker("Ella Fanth", db);
+    Worker Anne = createWorker("Anne Dam", db);
+
+
+    Team Frontend = createTeam("Frontend", new List<Worker> { Steen, Ejvind, Konrad }, db);
+    Team Backend = createTeam("Backend", new List<Worker> { Konrad, Sofus, Remo }, db);
+    Team Testere = createTeam("Testere", new List<Worker> { Ella, Anne, Steen }, db);
+
+}
+
+static Worker createWorker(string name, BloggingContext db)
+{
+    var worker = new Worker
+    {
+        Name = name
+    };
+
+    db.Workers.Add(worker);
+    db.SaveChanges();
+    return worker;
+}
+
+static Team createTeam(string name, List<Worker> workers, BloggingContext db)
+{
+    var team = new Team
+    {
+        Name = name,
+        Workers = workers
+    };
+
+    db.Teams.Add(team);
+    db.SaveChanges();
+    return team;
+}
+
+static void displayTeamsAndWorkers(BloggingContext db)
+{
+    Console.WriteLine("Displaying all teams and their workers:");
+
+    // Load teams with their associated workers
+    var teams = db.Teams.Include(t => t.Workers).ToList();
+
+    foreach (var team in teams)
+    {
+        Console.WriteLine($"Team: {team.Name} (ID: {team.TeamId})");
+
+        foreach (var worker in team.Workers)
+        {
+            Console.WriteLine($"  - Worker: {worker.Name} (ID: {worker.WorkerId})");
+        }
+    }
 }
