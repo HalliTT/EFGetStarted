@@ -11,6 +11,10 @@
       "RelativeMoniker": "D:0:0:{D19E8922-254E-4409-8B84-A4D4F02E12A3}|EFGetStarted\\EFGetStarted.csproj|solutionrelative:efgetstarted\\model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\haral\\Documents\\GitHub\\EFGetStarted\\EFGetStarted\\Migrations\\20241104082825_CreatedTasksTodos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:EFGetStarted\\Migrations\\20241104082825_CreatedTasksTodos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{D19E8922-254E-4409-8B84-A4D4F02E12A3}|EFGetStarted\\EFGetStarted.csproj|C:\\Users\\haral\\Documents\\GitHub\\EFGetStarted\\EFGetStarted\\Migrations\\20241104075619_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D19E8922-254E-4409-8B84-A4D4F02E12A3}|EFGetStarted\\EFGetStarted.csproj|solutionrelative:EFGetStarted\\Migrations\\20241104075619_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -22,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -35,14 +39,28 @@
             {
               "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "20241104082825_CreatedTasksTodos.cs",
+              "DocumentMoniker": "C:\\Users\\haral\\Documents\\GitHub\\EFGetStarted\\EFGetStarted\\Migrations\\20241104082825_CreatedTasksTodos.cs",
+              "RelativeDocumentMoniker": "EFGetStarted\\Migrations\\20241104082825_CreatedTasksTodos.cs",
+              "ToolTip": "C:\\Users\\haral\\Documents\\GitHub\\EFGetStarted\\EFGetStarted\\Migrations\\20241104082825_CreatedTasksTodos.cs",
+              "RelativeToolTip": "EFGetStarted\\Migrations\\20241104082825_CreatedTasksTodos.cs",
+              "ViewState": "AQIAACIAAAAAAAAAAAAgwDMAAAAaAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-04T08:28:25.316Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "20241104075619_InitialCreate.cs",
               "DocumentMoniker": "C:\\Users\\haral\\Documents\\GitHub\\EFGetStarted\\EFGetStarted\\Migrations\\20241104075619_InitialCreate.cs",
               "RelativeDocumentMoniker": "EFGetStarted\\Migrations\\20241104075619_InitialCreate.cs",
               "ToolTip": "C:\\Users\\haral\\Documents\\GitHub\\EFGetStarted\\EFGetStarted\\Migrations\\20241104075619_InitialCreate.cs",
               "RelativeToolTip": "EFGetStarted\\Migrations\\20241104075619_InitialCreate.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-04T07:56:19.72Z"
+              "WhenOpened": "2024-11-04T07:56:19.72Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -52,9 +70,10 @@
               "RelativeDocumentMoniker": "EFGetStarted\\Model.cs",
               "ToolTip": "C:\\Users\\haral\\Documents\\GitHub\\EFGetStarted\\EFGetStarted\\Model.cs",
               "RelativeToolTip": "EFGetStarted\\Model.cs",
-              "ViewState": "AQIAAAsAAAAAAAAAAAAwwCgAAAABAAAA",
+              "ViewState": "AQIAACYAAAAAAAAAAAA6wDQAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-04T07:54:45.231Z"
+              "WhenOpened": "2024-11-04T07:54:45.231Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -64,7 +83,7 @@
               "RelativeDocumentMoniker": "EFGetStarted\\Program.cs",
               "ToolTip": "C:\\Users\\haral\\Documents\\GitHub\\EFGetStarted\\EFGetStarted\\Program.cs",
               "RelativeToolTip": "EFGetStarted\\Program.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAHAAAA",
+              "ViewState": "AQIAAEgAAAAAAAAAAAAowFsAAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-04T07:52:44.647Z",
               "EditorCaption": ""
