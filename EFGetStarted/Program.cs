@@ -17,6 +17,7 @@ using var db = new BloggingContext();
 
 //connectTaskAndTeam(db);
 //connectTodoAndWorker(db);
+PrintTeamsWithoutTasks(db);
 
 
 static void seedTeam(BloggingContext db)
@@ -285,3 +286,25 @@ static void printIncompleteTasksAndTodos(BloggingContext db)
         }
     }
 }
+
+static void PrintTeamsWithoutTasks(BloggingContext db)
+{
+    var teamsWithoutTasks = db.Team
+        .Where(t => !t.Tasks.Any())
+        .ToList();
+
+    if (!teamsWithoutTasks.Any())
+    {
+        Console.WriteLine("All teams have tasks.");
+    }
+    else
+    {
+        Console.WriteLine("Teams without tasks:");
+        foreach (var team in teamsWithoutTasks)
+        {
+            Console.WriteLine($"Team ID: {team.TeamId}, Name: {team.Name}");
+        }
+    }
+}
+
+

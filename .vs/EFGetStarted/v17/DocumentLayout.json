@@ -3,11 +3,11 @@
   "WorkspaceRootPath": "C:\\Users\\haral\\Documents\\GitHub\\EFGetStarted\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D19E8922-254E-4409-8B84-A4D4F02E12A3}|EFGetStarted\\EFGetStarted.csproj|C:\\Users\\haral\\Documents\\GitHub\\EFGetStarted\\efgetstarted\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{D19E8922-254E-4409-8B84-A4D4F02E12A3}|EFGetStarted\\EFGetStarted.csproj|c:\\users\\haral\\documents\\github\\efgetstarted\\efgetstarted\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D19E8922-254E-4409-8B84-A4D4F02E12A3}|EFGetStarted\\EFGetStarted.csproj|solutionrelative:efgetstarted\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D19E8922-254E-4409-8B84-A4D4F02E12A3}|EFGetStarted\\EFGetStarted.csproj|c:\\users\\haral\\documents\\github\\efgetstarted\\efgetstarted\\model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{D19E8922-254E-4409-8B84-A4D4F02E12A3}|EFGetStarted\\EFGetStarted.csproj|C:\\Users\\haral\\Documents\\GitHub\\EFGetStarted\\efgetstarted\\model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D19E8922-254E-4409-8B84-A4D4F02E12A3}|EFGetStarted\\EFGetStarted.csproj|solutionrelative:efgetstarted\\model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -38,8 +38,7 @@
               "RelativeToolTip": "EFGetStarted\\Model.cs",
               "ViewState": "AQIAAAUAAAAAAAAAAAAQwBAAAAA4AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-04T07:54:45.231Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-04T07:54:45.231Z"
             },
             {
               "$type": "Document",
@@ -49,7 +48,7 @@
               "RelativeDocumentMoniker": "EFGetStarted\\Program.cs",
               "ToolTip": "C:\\Users\\haral\\Documents\\GitHub\\EFGetStarted\\EFGetStarted\\Program.cs",
               "RelativeToolTip": "EFGetStarted\\Program.cs",
-              "ViewState": "AQIAAAkAAAAAAAAAAAAAABIAAAAbAAAA",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAABMAAAAbAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-04T07:52:44.647Z",
               "EditorCaption": ""
