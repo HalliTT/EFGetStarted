@@ -18,6 +18,7 @@ using var db = new BloggingContext();
 //connectTaskAndTeam(db);
 //connectTodoAndWorker(db);
 PrintTeamsWithoutTasks(db);
+PrintTeamsCurrentTask(db);
 
 
 static void seedTeam(BloggingContext db)
@@ -307,4 +308,26 @@ static void PrintTeamsWithoutTasks(BloggingContext db)
     }
 }
 
+
+static void PrintTeamsCurrentTask(BloggingContext db)
+{
+    var teamsWithCurrentTasks = db.Team
+        .Include(t => t.CurrentTask)
+        .ToList();
+
+    Console.WriteLine("Teams and their current tasks:");
+    foreach (var team in teamsWithCurrentTasks)
+    {
+        Console.WriteLine($"Team ID: {team.TeamId}, Name: {team.Name}");
+
+        if (team.CurrentTask != null)
+        {
+            Console.WriteLine($"\tCurrent Task ID: {team.CurrentTask.TaskId}, Name: {team.CurrentTask.Name}");
+        }
+        else
+        {
+            Console.WriteLine("\tNo current task assigned.");
+        }
+    }
+}
 
