@@ -17,8 +17,10 @@ using var db = new BloggingContext();
 
 //connectTaskAndTeam(db);
 //connectTodoAndWorker(db);
-PrintTeamsWithoutTasks(db);
-PrintTeamsCurrentTask(db);
+//PrintTeamsWithoutTasks(db);
+//PrintTeamsCurrentTask(db);
+PrintTeamsCurrentTaskProgress(db);
+
 
 
 static void seedTeam(BloggingContext db)
@@ -331,3 +333,36 @@ static void PrintTeamsCurrentTask(BloggingContext db)
     }
 }
 
+static void PrintTeamsCurrentTaskProgress(BloggingContext db)
+{
+    var teamsWithCurrentTasks = db.Team
+        .Include(t => t.CurrentTask)
+        .ThenInclude(task => task.Todos)
+        .ToList();
+
+    Console.WriteLine("Team Progress on Current Task:");
+    foreach (var team in teamsWithCurrentTasks)
+    {
+        Console.WriteLine($"Team ID: {team.TeamId}, Name: {team.Name}");
+
+        if (team.CurrentTask != null && team.CurrentTask.Todos.Any())
+        {
+            int totalTodos = team.CurrentTask.Todos.Count;
+            int completedTodos = team.CurrentTask.Todos.Count(todo => todo.IsComplete == true);
+
+            // Calculate the completion percentage
+            double completionPercentage = (double)completedTodos / totalTodos * 100;
+            Console.WriteLine($"\tCurrent Task: {team.CurrentTask.Name}");
+            Console.WriteLine($"\tProgress: {completionPercentage:0.00}% ({completedTodos}/{totalTodos} todos completed)");
+        }
+        else if (team.CurrentTask != null)
+        {
+            Console.WriteLine($"\tCurrent Task: {team.CurrentTask.Name}");
+            Console.WriteLine("\tProgress: 0% (No todos in this task)");
+        }
+        else
+        {
+            Console.WriteLine("\tNo current task assigned.");
+        }
+    }
+}
