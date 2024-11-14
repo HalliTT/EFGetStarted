@@ -16,45 +16,6 @@ namespace EFGetStarted.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.10");
 
-            modelBuilder.Entity("Blog", b =>
-                {
-                    b.Property<int>("BlogId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("BlogId");
-
-                    b.ToTable("Blogs");
-                });
-
-            modelBuilder.Entity("Post", b =>
-                {
-                    b.Property<int>("PostId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BlogId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("PostId");
-
-                    b.HasIndex("BlogId");
-
-                    b.ToTable("Posts");
-                });
-
             modelBuilder.Entity("Task", b =>
                 {
                     b.Property<int>("TaskId")
@@ -62,12 +23,16 @@ namespace EFGetStarted.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int?>("TeamId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("TaskId");
 
-                    b.ToTable("Tasks");
+                    b.HasIndex("TeamId");
+
+                    b.ToTable("Task");
                 });
 
             modelBuilder.Entity("Team", b =>
@@ -76,13 +41,17 @@ namespace EFGetStarted.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("CurrentTaskId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("TeamId");
 
-                    b.ToTable("Teams");
+                    b.HasIndex("CurrentTaskId");
+
+                    b.ToTable("Team");
                 });
 
             modelBuilder.Entity("TeamWorker", b =>
@@ -106,21 +75,25 @@ namespace EFGetStarted.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsComplete")
+                    b.Property<bool?>("IsComplete")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("TaskId")
+                    b.Property<int>("TaskId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("WorkerId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("TodoId");
 
                     b.HasIndex("TaskId");
 
-                    b.ToTable("Todos");
+                    b.HasIndex("WorkerId");
+
+                    b.ToTable("Todo");
                 });
 
             modelBuilder.Entity("Worker", b =>
@@ -129,24 +102,33 @@ namespace EFGetStarted.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("CurrentTodoTodoId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("WorkerId");
 
-                    b.ToTable("Workers");
+                    b.HasIndex("CurrentTodoTodoId");
+
+                    b.ToTable("Worker");
                 });
 
-            modelBuilder.Entity("Post", b =>
+            modelBuilder.Entity("Task", b =>
                 {
-                    b.HasOne("Blog", "Blog")
-                        .WithMany("Posts")
-                        .HasForeignKey("BlogId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Team", null)
+                        .WithMany("Tasks")
+                        .HasForeignKey("TeamId");
+                });
 
-                    b.Navigation("Blog");
+            modelBuilder.Entity("Team", b =>
+                {
+                    b.HasOne("Task", "CurrentTask")
+                        .WithMany()
+                        .HasForeignKey("CurrentTaskId");
+
+                    b.Navigation("CurrentTask");
                 });
 
             modelBuilder.Entity("TeamWorker", b =>
@@ -166,17 +148,39 @@ namespace EFGetStarted.Migrations
 
             modelBuilder.Entity("Todo", b =>
                 {
-                    b.HasOne("Task", null)
+                    b.HasOne("Task", "Task")
                         .WithMany("Todos")
-                        .HasForeignKey("TaskId");
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Worker", null)
+                        .WithMany("Todos")
+                        .HasForeignKey("WorkerId");
+
+                    b.Navigation("Task");
                 });
 
-            modelBuilder.Entity("Blog", b =>
+            modelBuilder.Entity("Worker", b =>
                 {
-                    b.Navigation("Posts");
+                    b.HasOne("Todo", "CurrentTodo")
+                        .WithMany()
+                        .HasForeignKey("CurrentTodoTodoId");
+
+                    b.Navigation("CurrentTodo");
                 });
 
             modelBuilder.Entity("Task", b =>
+                {
+                    b.Navigation("Todos");
+                });
+
+            modelBuilder.Entity("Team", b =>
+                {
+                    b.Navigation("Tasks");
+                });
+
+            modelBuilder.Entity("Worker", b =>
                 {
                     b.Navigation("Todos");
                 });

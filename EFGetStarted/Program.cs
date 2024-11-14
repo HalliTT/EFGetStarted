@@ -1,98 +1,260 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 using var db = new BloggingContext();
 
+//seedTeam(db);
+//seedWorker(db);
+//connectWorkerAndTeam(db);
 
-
-// Note: This sample requires the database to be created before running.
-Console.WriteLine($"Database path: {db.DbPath}.");
-
-// Create
-Console.WriteLine("Inserting a new blog");
-db.Add(new Blog { Url = "http://blogs.msdn.com/adonet" });
-db.SaveChanges();
-
-// Read
-Console.WriteLine("Querying for a blog");
-var blog = db.Blogs
-    .OrderBy(b => b.BlogId)
-    .First();
-
-// Update
-Console.WriteLine("Updating the blog and adding a post");
-blog.Url = "https://devblogs.microsoft.com/dotnet";
-blog.Posts.Add(
-    new Post { Title = "Hello World", Content = "I wrote an app using EF Core!" });
-db.SaveChanges();
-
-// Delete
-Console.WriteLine("Delete the blog");
-db.Remove(blog);
-db.SaveChanges();
-
-// Tasks & Todos
-//seedTasks();
+//seedTasks(db);
+//seedTodo(db);
 //displayTasksAndTodos(db);
 //printIncompleteTasksAndTodos(db);
-//deleteAllTasksAndTodos(db)
+
+//connectTaskAndTeam(db);
+//connectTodoAndWorker(db);
 
 
-// Teams & Workers
-seedTeamsAndWorkers();
-displayTeamsAndWorkers(db);
-//deleteAllTeamsAndWorkers(db);
-
-static void seedTasks()
+static void seedTeam(BloggingContext db)
 {
-    using var db = new BloggingContext();
-
-    Console.WriteLine("Creating tasks and todos");
-    Todo wirt = createTodo("Write code", true, db);
-    Todo compile = createTodo("Compile source", false, db);
-    Todo test = createTodo("Test program", false, db);
-
-    Todo water = createTodo("Pour water", false, db);
-    Todo coffe = createTodo("Pour coffee", true, db);
-    Todo on = createTodo("Turn on", false, db);
-
-
-    Task one = createTask("Produce software", new List<Todo> { wirt, compile, test }, db);
-    Task Two = createTask("Brew coffee", new List<Todo> { water, coffe, on }, db);
+    Console.WriteLine("Seed teams...");
+    createTeam("Frontend", db);
+    createTeam("Backend", db);
+    createTeam("Testere", db);
 }
-
-static Todo createTodo(string name, bool completed,BloggingContext db)
+static void createTeam(string name, BloggingContext db)
 {
-    var todo = new Todo
+    var team = new Team
     {
         Name = name,
-        IsComplete = completed
     };
-
-    db.Todos.Add(todo);
+    db.Team.Add(team);
+    Console.WriteLine("Create team " + team.Name);
     db.SaveChanges();
-    return todo;
 }
 
-static Task createTask(string name, List<Todo> todo, BloggingContext db)
+static void seedWorker(BloggingContext db)
+{
+    Console.WriteLine("Seed workers...");
+    var frontendTasks = db.Team.FirstOrDefault(t => t.Name == "Frontend");
+    var backendTasks = db.Team.FirstOrDefault(t => t.Name == "Backend");
+    var testereTasks = db.Team.FirstOrDefault(t => t.Name == "Testere");
+
+    if(frontendTasks == null)
+    {
+        return;
+    }
+
+    createWorker("Steen Secher", db);
+    createWorker("Ejvind Møller", db);
+    createWorker("Konrad Sommer", db);
+    createWorker("Sofus Lotus", db);
+    createWorker("Remo Lademann", db);
+    createWorker("Ella Fanth", db);
+    createWorker("Anne Dam", db);
+}
+
+static void createWorker(string name, BloggingContext db)
+{
+    var worker = new Worker
+    {
+        Name = name,
+    };
+
+    db.Worker.Add(worker);
+    Console.WriteLine("Create worker " + worker.Name);
+    db.SaveChanges();
+}
+
+static void seedTasks(BloggingContext db)
+{
+    Console.WriteLine("Seed task...");
+
+    createTask("Produce software", db);
+    createTask("Brew coffee", db);
+}
+
+static void createTask(string name, BloggingContext db)
 {
     var task = new Task
     {
         Name = name,
-        Todos = todo
     };
-    db.Tasks.Add(task);
+    db.Task.Add(task);
+    Console.WriteLine("Create task " + task.Name);
     db.SaveChanges();
-    return task;
 }
+
+static void seedTodo(BloggingContext db)
+{
+    Console.WriteLine("Seed todos...");
+    var softwareTasks = db.Task.FirstOrDefault(t => t.Name == "Produce software");
+    var brewTask = db.Task.FirstOrDefault(t => t.Name == "Brew coffee");
+
+    if (softwareTasks == null || brewTask == null) {
+        return;
+    }
+
+    createTodo("Write code", true, softwareTasks.TaskId, db);
+    createTodo("Compile source", false, softwareTasks.TaskId, db);
+    createTodo("Test program", false, softwareTasks.TaskId, db);
+
+    createTodo("Pour water", false, brewTask.TaskId, db);
+    createTodo("Pour coffee", true, brewTask.TaskId, db);
+    createTodo("Turn on", false, brewTask.TaskId, db);
+}
+
+static void createTodo(string name, bool completed, int taskId, BloggingContext db)
+{
+    var todo = new Todo
+    {
+        Name = name,
+        IsComplete = completed,
+        TaskId = taskId,
+    };
+
+    db.Todo.Add(todo);
+    Console.WriteLine("Create todo " + todo.Name);
+
+    db.SaveChanges();
+}
+
+static void connectWorkerAndTeam(BloggingContext db)
+{
+    Console.WriteLine("Connect worket to team...");
+
+    var frontend = db.Team.FirstOrDefault(t => t.Name == "Frontend");
+    var backend = db.Team.FirstOrDefault(t => t.Name == "Backend");
+    var testere = db.Team.FirstOrDefault(t => t.Name == "Testere");
+
+    var steen = db.Worker.FirstOrDefault(w => w.Name == "Steen Secher");
+    var ejvind = db.Worker.FirstOrDefault(w => w.Name == "Ejvind Møller");
+    var konrad = db.Worker.FirstOrDefault(w => w.Name == "Konrad Sommer");
+    var sofus = db.Worker.FirstOrDefault(w => w.Name == "Sofus Lotus");
+    var remo = db.Worker.FirstOrDefault(w => w.Name == "Remo Lademann");
+    var ella = db.Worker.FirstOrDefault(w => w.Name == "Ella Fanth");
+    var anne = db.Worker.FirstOrDefault(w => w.Name == "Anne Dam");
+
+    if (frontend == null || backend == null || testere == null)
+    {
+        return;
+    }
+    if (steen == null || ejvind == null || konrad == null || sofus == null || remo == null || ella == null || anne == null)
+    {
+        return;
+    }
+
+    frontend.Workers.AddRange([steen, ejvind, konrad]);
+    Console.WriteLine("Connect " + steen.Name + " " + ejvind.Name + " " + konrad.Name + " to " + frontend.Name);
+
+    backend.Workers.AddRange([konrad, sofus, remo]);
+    Console.WriteLine("Connect " + konrad.Name + " " + sofus.Name + " " + remo.Name + " to " + backend.Name);
+
+
+    testere.Workers.AddRange([ella, anne, steen]);
+    Console.WriteLine("Connect " + ella.Name + " " + anne.Name + " " + steen.Name + " to " + testere.Name);
+
+    db.SaveChanges();
+}
+
+static void connectTaskAndTeam(BloggingContext db)
+{
+    Console.WriteLine("Connect task to team...");
+
+    var softwareTask = db.Task.FirstOrDefault(t => t.Name == "Produce software");
+    var brewTask = db.Task.FirstOrDefault(t => t.Name == "Brew coffee");
+
+    var frontend = db.Team.FirstOrDefault(t => t.Name == "Frontend");
+    var backend = db.Team.FirstOrDefault(t => t.Name == "Backend");
+    var testere = db.Team.FirstOrDefault(t => t.Name == "Testere");
+
+    if (softwareTask == null || brewTask == null || frontend == null || backend == null || testere == null)
+    {
+        return;
+    }
+
+    frontend.Tasks.Add(softwareTask);
+    Console.WriteLine("Connect " + softwareTask.Name + " to " + frontend.Name);
+    frontend.CurrentTask = softwareTask;
+    Console.WriteLine("Connect current task " + softwareTask.Name + " to " + frontend.Name);
+    backend.Tasks.Add(brewTask);
+    Console.WriteLine("Connect " + brewTask.Name + " to " + backend.Name);
+    backend.CurrentTask = brewTask;
+    Console.WriteLine("Connect current task " + brewTask.Name + " to " + backend.Name);
+
+    db.SaveChanges();
+}
+
+static void connectTodoAndWorker(BloggingContext db)
+{
+    Console.WriteLine("Connect todo to worker...");
+
+    var teamFrontend = db.Team
+        .Include(t => t.Workers)
+        .Include(t => t.Tasks)
+        .FirstOrDefault(t => t.Name == "Frontend");
+
+    if (teamFrontend != null && teamFrontend.CurrentTaskId != null)
+    {
+        var todosFrontend = db.Todo
+          .Where(todo => todo.TaskId == teamFrontend.CurrentTaskId.Value)
+          .ToList();
+        foreach (var worker in teamFrontend.Workers)
+        {
+            var todoIndex = teamFrontend.Workers.IndexOf(worker) % todosFrontend.Count;
+            worker.Todos.Add(todosFrontend[todoIndex]);
+            Console.WriteLine($"Connect Worker ID: {worker.WorkerId}, Name: {worker.Name}, to - Todo ID: {todosFrontend[todoIndex].TodoId}");
+        }
+    }
+
+    var teamBackend = db.Team
+        .Include(t => t.Workers)
+        .Include(t => t.Tasks)
+        .FirstOrDefault(t => t.Name == "Backend");
+
+    if (teamBackend != null && teamBackend.CurrentTaskId != null)
+    {
+        var todosBackend = db.Todo
+        .Where(todo => todo.TaskId == teamBackend.CurrentTaskId.Value)
+        .ToList();
+        foreach (var worker in teamBackend.Workers)
+        {
+            var todoIndex = teamBackend.Workers.IndexOf(worker) % todosBackend.Count;
+            worker.Todos.Add(todosBackend[todoIndex]);
+            Console.WriteLine($"Connect Worker ID: {worker.WorkerId}, Name: {worker.Name}, to - Todo ID: {todosBackend[todoIndex].TodoId}");
+        }
+    }
+
+    var teamTest = db.Team
+        .Include(t => t.Workers)
+        .Include(t => t.Tasks)
+        .FirstOrDefault(t => t.Name == "Test");
+    if (teamTest != null && teamTest.CurrentTaskId != null)
+    {
+        var todosTest = db.Todo
+        .Where(todo => todo.TaskId == teamTest.CurrentTaskId.Value)
+        .ToList();
+        foreach (var worker in teamTest.Workers)
+        {
+            var todoIndex = teamTest.Workers.IndexOf(worker) % todosTest.Count;
+            worker.Todos.Add(todosTest[todoIndex]);
+            Console.WriteLine($"Connect Worker ID: {worker.WorkerId}, Name: {worker.Name}, to - Todo ID: {todosTest[todoIndex].TodoId}");
+        }
+    }
+
+    db.SaveChanges();
+}
+
 
 static void displayTasksAndTodos(BloggingContext db)
 {
     Console.WriteLine("Displaying all tasks and their associated todos:");
 
-    var tasks = db.Tasks.Include(t => t.Todos).ToList();
+    var tasks = db.Task.Include(t => t.Todos).ToList();
     foreach (var task in tasks)
     {
         Console.WriteLine($"Task: {task.Name} (ID: {task.TaskId})");
@@ -108,88 +270,18 @@ static void printIncompleteTasksAndTodos(BloggingContext db)
 {
     Console.WriteLine("Displaying all tasks and their associated undone todos:");
 
-    var tasksWithIncompleteTodos = db.Tasks.Where(t => t.Todos.Any(todo => !todo.IsComplete))
-                                     .Include(t => t.Todos)
-                                     .ToList();
+    var tasksWithIncompleteTodos = db.Task
+        .Where(t => t.Todos.Any(todo => todo.IsComplete == false))
+        .Include(t => t.Todos)
+    .ToList();
 
     foreach (var task in tasksWithIncompleteTodos)
     {
         Console.WriteLine($"Task: {task.Name} (ID: {task.TaskId})");
 
-        foreach (var todo in task.Todos.Where(todo => !todo.IsComplete))
+        foreach (var todo in task.Todos.Where(todo => todo.IsComplete == false))
         {
             Console.WriteLine($"  - Todo: {todo.Name} (ID: {todo.TodoId}, Completed: {todo.IsComplete})");
-        }
-    }
-}
-
-static void deleteAllTasksAndTodos(BloggingContext db)
-{
-    db.Todos.RemoveRange(db.Todos);
-    db.Tasks.RemoveRange(db.Tasks);
-    db.SaveChanges();
-}
-
-static void seedTeamsAndWorkers()
-{
-    using var db = new BloggingContext();
-
-    Console.WriteLine("Creating teams and workers...");
-        
-    Worker Steen = createWorker("Steen Secher", db);
-    Worker Ejvind = createWorker("Ejvind Møller", db);
-    Worker Konrad = createWorker("Konrad Sommer", db);
-    Worker Sofus = createWorker("Sofus Lotus", db);
-    Worker Remo = createWorker("Remo Lademann", db);
-    Worker Ella = createWorker("Ella Fanth", db);
-    Worker Anne = createWorker("Anne Dam", db);
-
-
-    Team Frontend = createTeam("Frontend", new List<Worker> { Steen, Ejvind, Konrad }, db);
-    Team Backend = createTeam("Backend", new List<Worker> { Konrad, Sofus, Remo }, db);
-    Team Testere = createTeam("Testere", new List<Worker> { Ella, Anne, Steen }, db);
-
-}
-
-static Worker createWorker(string name, BloggingContext db)
-{
-    var worker = new Worker
-    {
-        Name = name
-    };
-
-    db.Workers.Add(worker);
-    db.SaveChanges();
-    return worker;
-}
-
-static Team createTeam(string name, List<Worker> workers, BloggingContext db)
-{
-    var team = new Team
-    {
-        Name = name,
-        Workers = workers
-    };
-
-    db.Teams.Add(team);
-    db.SaveChanges();
-    return team;
-}
-
-static void displayTeamsAndWorkers(BloggingContext db)
-{
-    Console.WriteLine("Displaying all teams and their workers:");
-
-    // Load teams with their associated workers
-    var teams = db.Teams.Include(t => t.Workers).ToList();
-
-    foreach (var team in teams)
-    {
-        Console.WriteLine($"Team: {team.Name} (ID: {team.TeamId})");
-
-        foreach (var worker in team.Workers)
-        {
-            Console.WriteLine($"  - Worker: {worker.Name} (ID: {worker.WorkerId})");
         }
     }
 }
